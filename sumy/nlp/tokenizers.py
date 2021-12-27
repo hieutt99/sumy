@@ -8,6 +8,7 @@ import string
 import zipfile
 
 import nltk
+import underthesea
 
 from .._compat import to_string, to_unicode, unicode
 from ..utils import normalize_language
@@ -76,6 +77,17 @@ class KoreanWordTokenizer:
         kkma = Kkma()
         return kkma.nouns(text)
 
+class ViSentTokenizer:
+    def tokenize(self, text):
+        return underthesea.sent_tokenize(text)
+
+class ViWordTokenizer:
+    def tokenize(self, text):
+        segs = underthesea.word_tokenize(text, format='text')
+        tokens = underthesea.word_tokenize(segs)
+        return tokens
+
+
 
 class Tokenizer(object):
     """Language dependent tokenizer of text document."""
@@ -94,6 +106,7 @@ class Tokenizer(object):
     }
 
     SPECIAL_SENTENCE_TOKENIZERS = {
+        'vietnamese': ViSentTokenizer(),
         'hebrew': nltk.RegexpTokenizer(r'\.\s+', gaps=True),
         'japanese': nltk.RegexpTokenizer('[^　！？。]*[！？。]'),
         'chinese': nltk.RegexpTokenizer('[^　！？。]*[！？。]'),
@@ -101,6 +114,7 @@ class Tokenizer(object):
     }
 
     SPECIAL_WORD_TOKENIZERS = {
+        'vietnamese': ViWordTokenizer(),
         'hebrew': HebrewWordTokenizer(),
         'japanese': JapaneseWordTokenizer(),
         'chinese': ChineseWordTokenizer(),

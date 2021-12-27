@@ -10,6 +10,7 @@ from sumy.nlp.tokenizers import Tokenizer
 from sumy.summarizers.text_rank import TextRankSummarizer
 from sumy.nlp.stemmers import Stemmer
 from sumy.utils import get_stop_words
+from sumy.models.dom import ObjectDocumentModel, Paragraph, Sentence
 
 
 
@@ -37,4 +38,6 @@ if __name__ == "__main__":
     # for sentence in summarizer(parser.document, SENTENCES_COUNT):
     #     print(sentence)
     sents = summarizer(parser.document, SENTENCES_COUNT)
-    print(sents)
+    # print(sents)
+    temp = ' '.join([sent._text for sent in sents])
+    print(temp)
